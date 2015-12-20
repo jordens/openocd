@@ -286,6 +286,17 @@ class XilinxBscanSpi(XilinxPlatform):
             )
         elif isinstance(self.toolchain, XilinxISEToolchain):
             self.toolchain.bitgen_opt += " -g compress"
+            pins = {
+                'ProgPin': 'PullUp',
+                'DonePin': 'PullUp',
+                'TckPin': 'PullNone',
+                'TdiPin': 'PullNone',
+                'TdoPin': 'PullNone',
+                'TmsPin': 'PullNone',
+                'UnusedPin': 'PullNone',
+                 }
+            for pin, config in pins.items():
+                self.toolchain.bitgen_opt += " -g {}:{} ".format(pin, config)
 
     @classmethod
     def make(cls, device, errors=False):
